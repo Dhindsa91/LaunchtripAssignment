@@ -1,4 +1,4 @@
-<h1>Build:</h1>
+<h1> Manual Build:</h1>
 
 cd ./client <br/>
 npm install <br/>
@@ -8,8 +8,8 @@ cd ./server <br/>
 npm install <br/>
 npm start <br/>
 
-
-<h1>Docker:</h1>
+************
+<h1>Docker Build:</h1>
 docker-compose build <br/>
 docker-compose up <br/>
 
