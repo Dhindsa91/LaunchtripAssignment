@@ -1,0 +1,32 @@
+.app-header {
+  background-color: #282c34;
+  height: 7vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+  padding: 1em;
+}
+
+.link{
+  color: white;
+  text-decoration: none; /* no underline */
+}
+
+.create-todo{
+  padding: 5%;
+}
+
+.todos{
+  padding: 5%;
+}
+
+
+.login{
+  padding: 5%;
+}
+
+
+.register{
+  padding: 5%;
+}
