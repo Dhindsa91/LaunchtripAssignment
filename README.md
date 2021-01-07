@@ -27,5 +27,5 @@ docker-compose up <br/>
 -I use jwt tokens for authentication  <br/>
 
 
-I neglected modularizing the application for the sake of completing the assignment quickly. I also left some console logs to showcase the data being exchanged.
+I neglected modularization of the code for the sake of completion.
 ************
