@@ -1,26 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import store from '../redux/store';
+
 import {useSelector, useDispatch} from 'react-redux';
 
 
 export default function Index() {
-    const [description, setDescription] = useState("");
+    var [description, setDescription] = useState("");
     const [dueDate, setDueDate] = useState("");
     const [status, setStatus] = useState("todo");
     const [todos, setTodos] = useState([]);
     const [msg, setMsg] = useState("");
     var user = useSelector(state => state.user.user.username);
+
+    const descriptionRef = useRef();
+    const dueDateRef = useRef();
+    const statusRef = useRef();
+
     
+    const clearState = () => {
+      console.log("clearing state...");
+      setDescription("");
+      setDueDate("");
+      setStatus("todo");
+      descriptionRef.current.value = "";
+      dueDateRef.current.value = "";
+      statusRef.current.value = "todo";
+    }
   
  
-
     const dispatch = useDispatch();
 
     // Get our todos on load  
-    useEffect(async() => {
-
-       await axios({
+    useEffect(() => {
+      axios({
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         method: 'get',
         url: `http://localhost:3001/get-posts/${user}`
@@ -41,12 +53,13 @@ export default function Index() {
     }, []);
 
     //Create Todo
-    const handleCreateTodo = async() => {
+    const handleCreateTodo = async(e) => {
+      e.preventDefault();
       setMsg("");
       if(!description || !dueDate || !status) return setMsg("Please Complete All Fields");
  
      
-      if(!user) setMsg("You Are Not Logged in");
+      if(!user) return setMsg("You Are Not Logged in");
 
       return await axios({
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -59,14 +72,11 @@ export default function Index() {
           username: user
           
         },
-      }).then(async()=>{
+
+      }).then(()=>{
             // Get todos
-
-            setDescription("");
-            setDueDate("");
-            setStatus("todo");
-
-            await axios({
+            clearState();
+            axios({
               headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
               method: 'get',
               url: `http://localhost:3001/get-posts/${user}`
@@ -74,6 +84,7 @@ export default function Index() {
             .then(response => {
         
               if(response.data.ok){
+   
                 let data = response.data.docs;
                 if(Array.isArray(data)) setTodos(data);
                 else setTodos(todos.push(data));
@@ -87,7 +98,6 @@ export default function Index() {
       }).catch(err=>{
         console.log(err);
       })
-
     }
 
     return (
@@ -119,9 +129,9 @@ export default function Index() {
             <div className="create-todo">
               <h1>Create Todo</h1>
               <form>
-                <input onChange={(e)=> setDescription(e.target.value)} className="input-group mb-2" placeholder="Description" />
-                <input type="date" onChange={(e)=> setDueDate(e.target.value)} className="input-group mb-2" placeholder="Due Date" />
-                <select className="input-group mb-2" onChange={(e)=> setStatus(e.target.value)}>
+                <input  ref={descriptionRef} onChange={(e)=> setDescription(e.target.value)} className="input-group mb-2" placeholder="Description" />
+                <input  ref={dueDateRef} type="date" onChange={(e)=> setDueDate(e.target.value)} className="input-group mb-2" placeholder="Due Date" />
+                <select ref={statusRef} className="input-group mb-2" onChange={(e)=> setStatus(e.target.value)}>
                   <option value="todo">todo</option>
                   <option value="in-progess">in-progess</option>
                   <option value="done">done</option>
