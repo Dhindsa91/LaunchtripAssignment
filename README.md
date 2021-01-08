@@ -4,7 +4,7 @@
 <h3>Simple Todo App</h3>
 1.Register<br/>
 2.Login<br/>
-3.Created some todos!<br/>
+3.Create some todos!<br/>
 4.Logout<br/>
 
 <h1> Manual Build:</h1>
